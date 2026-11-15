@@ -1,0 +1,63 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "*"
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "true"
+  DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+
+  NUGET_FEED: https://api.nuget.org/v3/index.json
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v7.0.1
+      with:
+        persist-credentials: false
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v6.1.0
+      with:
+        global-json-file: global.json
+    - name: Restore
+      run: dotnet restore
+    - name: Build
+      run: dotnet build -c Release --no-restore
+    - name: Test
+      run: dotnet test -c Release --no-restore --no-build
+    - name: Pack
+      if: startsWith(github.ref, 'refs/tags/')
+      run: dotnet pack -c Release --no-restore --no-build -p:Version="${GITHUB_REF_NAME#v}"
+    - name: Attest build provenance
+      id: attest
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/attest@v4.2.2
+      with:
+        subject-path: "${{ github.workspace }}/artifacts/package/release/**/*.nupkg"
+    - name: Upload build provenance bundle artifact
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: actions/upload-artifact@v7.0.2
+      with:
+        name: nuget-build-provenance-bundle
+        path: "${{ steps.attest.outputs.bundle-path }}"
+        if-no-files-found: error
+    - name: NuGet login (OIDC)
+      id: nuget-login
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: NuGet/login@v1.2.0
+      with:
+        user: PaulusParssinen
+    - name: NuGet push
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
+      run: dotnet nuget push "./artifacts/package/release/*.nupkg" --api-key "$NUGET_API_KEY" --source "$NUGET_FEED"

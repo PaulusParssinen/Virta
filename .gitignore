@@ -1,0 +1,8 @@
+**/bin/
+**/obj/
+artifacts/
+/benchmarks/results/
+BenchmarkDotNet.Artifacts/
+TestResults/
+.vs/
+!/.editorconfig

@@ -1,0 +1,10 @@
+Virta
+
+The DABA Lite implementation is adapted to C# from the
+Apache-2.0-licensed IBM sliding-window-aggregators reference implementations:
+https://github.com/IBM/sliding-window-aggregators
+
+Virta changes its storage, cursor representation, operator dispatch, public
+interfaces, resource management, and validation.
+
+Algorithm authors: Kanat Tangwongsan, Martin Hirzel, and Scott Schneider.

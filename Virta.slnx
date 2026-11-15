@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Virta/Virta.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Virta.Tests/Virta.Tests.csproj" />
+  </Folder>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/Virta.Benchmarks/Virta.Benchmarks.csproj" />
+  </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/Virta.Example/Virta.Example.csproj" />
+  </Folder>
+</Solution>

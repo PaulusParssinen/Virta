@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsAotCompatible>true</IsAotCompatible>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageId>Virta</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Paulus Parssinen</Authors>
+    <Description>First-in, first-out sliding-window aggregation with DABA Lite.</Description>
+    <PackageTags>sliding-window;aggregation;daba;streaming</PackageTags>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/PaulusParssinen/Virta</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="/" />
+    <None Include="../../NOTICE" Pack="true" PackagePath="/" />
+  </ItemGroup>
+</Project>
